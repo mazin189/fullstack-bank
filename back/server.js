@@ -23,7 +23,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: "https://bank-zeta-eight.vercel.app",
+  origin: ["https://bank-zeta-eight.vercel.app", "https://adminbank-three.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
