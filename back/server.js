@@ -45,11 +45,6 @@ app.use("/api/transfer", transferRoutes)
 app.use("/api/admin/users", adminUserRoutes)
 
 
-app.get("/", (req, res) => {
-  res.redirect("/api-docs")
-})
-
-
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
