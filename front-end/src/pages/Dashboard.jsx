@@ -29,7 +29,7 @@ const Dashboard = () => {
 
 
   const handleTransaction = async (type) => {
-   if(!amount || Number(amount) <= 0) return alert("")
+   if(!amount || Number(amount) <= 0) return alert("أدخل مبلغ صحيح")
     setLoading(true)
 
    try{
