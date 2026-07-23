@@ -18,7 +18,6 @@ import notificationRoutes from "./routes/notificationRoutes.js"
 
 
 dotenv.config();
-connectDB();
 
 const app = express();
 
@@ -46,6 +45,7 @@ app.use("/api/admin/users", adminUserRoutes)
 
 
 
+connectDB();
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
