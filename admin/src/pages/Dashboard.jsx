@@ -28,7 +28,7 @@ export default function Dashboard() {
       transactions: transRes.data?.transactions?.length || 0,
     })
     }catch(err){
-    console.log(err)
+    console.log(err.message)
     }finally{
       setLoading(false)
     }
