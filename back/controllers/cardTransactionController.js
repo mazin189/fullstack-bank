@@ -41,7 +41,7 @@ export const withdrawFromCard = async (req,res) => {
     const {amount} = req.body
     try{
         const card = await Card.findOne({user:req.user._id})
-        if(!card) return req.status(404).json({message: "لم يتم العثور علي بطاقة"})
+        if(!card) return res.status(404).json({message: "لم يتم العثور علي بطاقة"})
             if(card.balance < amount) return res.status(400).json({message: "رصيد البطاقة غير كاف"})
                 card.balance -= Number(amount)
             await card.save()
