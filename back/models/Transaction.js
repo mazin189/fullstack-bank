@@ -13,7 +13,7 @@ const transactionSchema = new mongoose.Schema({
       "transfer",
       "receive",
       "deposit-card",
-      "withdraw-to-card",
+      "withdraw-card",
       "transfer-to-card",
       "transfer-to-account",
     ],
