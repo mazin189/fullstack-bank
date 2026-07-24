@@ -7,7 +7,6 @@ import Dashboard from "./pages/Dashboard"
 import Transactions from "./pages/Transactions"
 import Profile from "./pages/Profile"
 import MyCard from "./pages/MyCard"
-import Deposit from "./pages/Deposit"
 import VerifyDeposit from "./pages/VertifyDeposit"
 import Notifications from "./pages/Notifications"
 import Transfer from "./pages/Transfer"
@@ -26,7 +25,6 @@ const App = () => {
           <Route path='/transfer' element={<ProtectedRoute><Transfer /></ProtectedRoute>}/>
           <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}/>
           <Route path='/mycard' element={<ProtectedRoute><MyCard /></ProtectedRoute>} />
-          <Route path='/deposit' element={<ProtectedRoute><Deposit /></ProtectedRoute>}/>
           <Route path='/verify-deposit' element={<ProtectedRoute><VerifyDeposit /></ProtectedRoute>}/>
           <Route path='/notifications' element={<ProtectedRoute><Notifications /></ProtectedRoute>}/>
           <Route path='/login' element={<Login />} />
