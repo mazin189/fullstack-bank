@@ -21,7 +21,7 @@ export default function App() {
       <Route path="*" element={<Navigate to="/login" />}/>
     </Routes>
     ) : (
-    <div className="flex">
+    <div className="">
      <Header onLogOut={logout}/>
      <main className="">
      <Routes>
