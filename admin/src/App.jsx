@@ -23,7 +23,7 @@ export default function App() {
     ) : (
     <div className="">
      <Header onLogOut={logout}/>
-     <main className="">
+     <main className="w-full">
      <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/users" element={<Users />} />
