@@ -21,7 +21,7 @@ export default function App() {
       <Route path="*" element={<Navigate to="/login" />}/>
     </Routes>
     ) : (
-    <div className="">
+    <div>
      <Header onLogOut={logout}/>
      <main className="w-full">
      <Routes>
