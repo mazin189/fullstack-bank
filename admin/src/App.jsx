@@ -23,7 +23,7 @@ export default function App() {
     ) : (
     <div className="flex">
      <Header onLogOut={logout}/>
-     <main className="flex-1">
+     <main className="">
      <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/users" element={<Users />} />
