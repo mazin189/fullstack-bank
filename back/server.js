@@ -45,7 +45,8 @@ app.use("/api/admin/users", adminUserRoutes)
 
 
 
-connectDB();
+connectDB().then(()=> {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+})
