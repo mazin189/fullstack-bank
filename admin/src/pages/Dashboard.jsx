@@ -96,7 +96,7 @@ className="max-w-7xl mx-auto text-center">
     transition={{delay: i * 0.1, type:"spring", stiffness: 80}}
     whileHover={{scale:1.05}}
     className={`p-6 rounded-2xl bg-linear-to-br ${s.color} backdrop-blur-md border border-white/10 shadow-lg shadow-black/30 hover:bg-white/10 transition-all`}>
-    <div className="flex flex-col items-center justify-center gap-3">
+    <div className="flex flex-col items-center justify-center gap-3 h-full bg-red-500">
       <div className="p-3 bg-white/20 rounded-full mx-6 md:mx-0">
       {s.icon}
       </div>
