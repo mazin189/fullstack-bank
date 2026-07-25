@@ -88,14 +88,14 @@ className="max-w-7xl mx-auto text-center">
 {loading? (
 <div className="text-gray-400 text-lg">⏳ جاري تحميل الإحصائيات...</div>
 ) : (
-<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 pb-10">
   {cardsData.map((s,i) => (
     <motion.div key={s.title}
     initial={{opacity:0, y:30}}
     animate={{opacity:1, y:0}}
     transition={{delay: i * 0.1, type:"spring", stiffness: 80}}
     whileHover={{scale:1.05}}
-    className={`p-6 rounded-2xl bg-linear-to-br ${s.color} backdrop-blur-md border border-white/10 shadow-lg shadow-black/30 hover:bg-white/10 transition-all`}>
+    className={`p-6 rounded-2xl bg-linear-to-br ${s.color} mx-6 lg:mx-0 backdrop-blur-md border border-white/10 shadow-lg shadow-black/30 hover:bg-white/10 transition-all`}>
     <div className="flex flex-col items-center justify-center gap-3">
       <div className="p-3 bg-white/20 rounded-full">
       {s.icon}
@@ -110,16 +110,6 @@ className="max-w-7xl mx-auto text-center">
   ))}
 </div>
 )}
-
-
-
-<motion.div
-initial={{opacity:0}} animate={{opacity:1}}
-transition={{delay:0.8}}
-className="mt-16 text-gray-400 text-sm"
->
-
-</motion.div>
 
 
 
