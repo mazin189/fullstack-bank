@@ -11,7 +11,7 @@ const MyCard = () => {
   const [flipped, setFlipped] = useState(false);
   const [msg, setMsg] = useState("");
 
-  const user = typeof window !== "undefined" && localStorage.getItem("user") 
+  const user = typeof window !== "undefined" && localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null
 
