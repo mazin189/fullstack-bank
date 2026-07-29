@@ -1,58 +1,51 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CreditCard, RefreshCw, Plus } from "lucide-react";
-import axios from "../api/axios.js"
+import axios from "../api/axios.js";
 
 const MyCard = () => {
-  
-
-
   const [card, setCard] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const [msg, setMsg] = useState("");
 
-  const user = typeof window !== "undefined" && localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
-  : null
+  const user =
+    typeof window !== "undefined" && localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null;
 
   const getCard = async () => {
-   try{
-   const {data} = await axios.get("/card")
-   console.log(data)
-   setCard(data.card);
-   setMsg("");
-   }catch(err){
-   setCard(null);
-   setMsg(err.response?.data?.message || "");
-   }
-  }
+    try {
+      const { data } = await axios.get("/card");
+      console.log(data);
+      setCard(data.card);
+      setMsg("");
+    } catch (err) {
+      setCard(null);
+      setMsg(err.response?.data?.message || "");
+    }
+  };
 
+  const createCard = async () => {
+    try {
+      const { data } = await axios.post("/card");
+      setCard(data.card);
+      setMsg("تم إنشاء البطاقة بنجاح ✅");
+    } catch (err) {
+      setMsg(err.response?.data?.message || "");
+    }
+  };
 
-const createCard = async () => {
-  try{
-   const {data} = await axios.post("/card")
-   setCard(data.card);
-   setMsg("تم إنشاء البطاقة بنجاح ✅")
-  }catch(err){
-  setMsg(err.response?.data?.message || "")
-  }
-}
+  useEffect(() => {
+    getCard();
+  }, []);
 
-
-
-
-useEffect(()=>{
-getCard();
-},[])
-
-
-
-const formatCardNumber = (num) => {
-  if(!num) return "---- ---- ---- ----"
-  return num.replace(/\s?/g, "").replace(/(\d{4})/g, "$1 ").trim()
-}
-
-
+  const formatCardNumber = (num) => {
+    if (!num) return "---- ---- ---- ----";
+    return num
+      .replace(/\s?/g, "")
+      .replace(/(\d{4})/g, "$1 ")
+      .trim();
+  };
 
   return (
     <div
@@ -65,7 +58,6 @@ const formatCardNumber = (num) => {
             <CreditCard /> بطاقتي الافتراضية
           </h2>
 
-     
           <div className="flex gap-2">
             <button
               onClick={getCard}
@@ -103,56 +95,67 @@ const formatCardNumber = (num) => {
               }}
             >
               <div className="flex items-center justify-between">
-              <div className="flex items-start gap-4 h-12">
-                <div className="flex items-center gap-3">
-                  <svg
-                    width="26"
-                    height="18"
-                    viewBox="0 0 48 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="16" cy="16" r="8" fill="white" opacity="0.9" />
-                    <circle cx="32" cy="16" r="8" fill="white" opacity="0.6" />
-                  </svg>
+                <div className="flex items-start gap-4 h-12">
+                  <div className="flex items-center gap-3">
+                    <svg
+                      width="26"
+                      height="18"
+                      viewBox="0 0 48 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="16"
+                        cy="16"
+                        r="8"
+                        fill="white"
+                        opacity="0.9"
+                      />
+                      <circle
+                        cx="32"
+                        cy="16"
+                        r="8"
+                        fill="white"
+                        opacity="0.6"
+                      />
+                    </svg>
+                  </div>
+
+                  <div className="text-sm text-white/90">NeoBank • VISA</div>
                 </div>
 
-                <div className="text-sm text-white/90">NeoBank • VISA</div>
-              </div>
-
-              <div className="text-right text-xs">
-                <div className="text-white/80">صلاحية</div>
-                <div className="font-semibold">
-                  {card?.expiryDate ?? "--/--"}
-                </div>
-              </div>
-              </div>
-
-            <div className="mt-6">
-              <div className="text-2xl tracking-widest font-mono">
-                {formatCardNumber(card?.cardNumber)}
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-between items-end">
-              <div className="text-sm">
-                <div className="text-white/80">المستخدم</div>
-                <div className="font-semibold">
-                  {user?.name ?? user?.email ?? "مستخدم"}
+                <div className="text-right text-xs">
+                  <div className="text-white/80">صلاحية</div>
+                  <div className="font-semibold">
+                    {card?.expiryDate ?? "--/--"}
+                  </div>
                 </div>
               </div>
 
-              <div className="text-right text-sm">
-                <div className="text-white/80">رصيد البطاقة</div>
-                <div className="font-bold text-lg">
-                  ${card?.balance?.toFixed(2) ?? "0.00"}
+              <div className="mt-6">
+                <div className="text-2xl tracking-widest font-mono">
+                  {formatCardNumber(card?.cardNumber)}
                 </div>
               </div>
-            </div>
 
-            <div className="absolute -bottom-8 -left-12 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
-            <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
+              <div className="mt-6 flex justify-between items-end">
+                <div className="text-sm">
+                  <div className="text-white/80">المستخدم</div>
+                  <div className="font-semibold">
+                    {user?.name ?? user?.email ?? "مستخدم"}
+                  </div>
+                </div>
 
+                <div className="text-right text-sm">
+                  <div className="text-white/80">رصيد البطاقة</div>
+                  <div className="font-bold text-lg">
+                    ${card?.balance?.toFixed(2) ?? "0.00"}
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute -bottom-8 -left-12 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
+              <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
             </div>
             <div
               className="absolute top-0 left-0 w-full rounded-2xl p-6 text-black h-64 bg-linear-to-r from-gray-200 to-gray-300 shadow-2xl"

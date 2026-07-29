@@ -1,66 +1,60 @@
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User, Mail, Wallet, CreditCard, Dot } from "lucide-react";
-import {AuthContext} from "../context/AuthContext.jsx"
-import axios from "../api/axios.js"
+import { AuthContext } from "../context/AuthContext.jsx";
+import axios from "../api/axios.js";
 
 export default function Profile() {
-
-
-  const {user} = useContext(AuthContext)
-  const [card, setCard] = useState(null)
+  const { user } = useContext(AuthContext);
+  const [card, setCard] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const [editName, setEditName] = useState(user?.name);
   const [editEmail, setEditEmail] = useState(user?.email);
   const [saved, setSaved] = useState(false);
 
-
-
   const getCard = async () => {
-    try{
-    const {data} = await axios.get("/card")
-    setCard(data.card)
-    }catch(err){
-    setCard(null)
+    try {
+      const { data } = await axios.get("/card");
+      setCard(data.card);
+    } catch (err) {
+      setCard(null);
     }
-  }
+  };
 
-
-  useEffect(()=>{
-    getCard()
-  },[])
-
-
+  useEffect(() => {
+    getCard();
+  }, []);
 
   const formatCardNumber = (num) => {
-  if(!num) return "---- ---- ---- ----"
-  return num.replace(/\s?/g, "").replace(/(\d{4})/g, "$1 ").trim()
-}
-
-
+    if (!num) return "---- ---- ---- ----";
+    return num
+      .replace(/\s?/g, "")
+      .replace(/(\d{4})/g, "$1 ")
+      .trim();
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault()
-  try{
-   const token = localStorage.getItem("token")
-   const res = await axios.put(
-    "/users/update", 
-    {name: editName, email: editEmail},
-    {headers: {
-      Authorization: `Bearer ${token}`
-    }}
-   )
-   setSaved(true)
-   setTimeout(()=> setSaved(false), 2000)
-   alert(res.data.message || "")
-  }catch(err){
-  alert(err.response?.data?.message || "")
-  }
-  } 
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        "/users/update",
+        { name: editName, email: editEmail },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+      alert(res.data.message || "");
+    } catch (err) {
+      alert(err.response?.data?.message || "");
+    }
+  };
 
-
-  const totalBalance = (user?.balance || 0) + (card?.balance || 0)
-
+  const totalBalance = (user?.balance || 0) + (card?.balance || 0);
 
   return (
     <div className="pt-24 min-h-screen w-full bg-linear-to-br from-[#0a0f1f] via-[#101a3a] to-[#1a237e] flex flex-col items-center justify-center text-white relative overflow-hidden">
@@ -226,64 +220,55 @@ export default function Profile() {
         </div>
       </motion.div>
 
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="mt-8 bg-white/10 backdrop-blur-xl border border-white/20 p-6 md:p-8 rounded-3xl shadow-xl text-gray-200 w-[90%] max-w-3xl"
+      >
+        <h3 className="text-xl font-bold mb-4 text-center text-white">
+          تعديل الملف الشخصي ✏️
+        </h3>
 
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className="text-gray-400 text-sm">الاسم</label>
+            <input
+              type="text"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              className="w-full mt-1 rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none"
+            />
+          </div>
 
+          <div>
+            <label className="text-sm text-gray-400">البريد الإلكتروني</label>
+            <input
+              type="email"
+              value={editEmail}
+              onChange={(e) => setEditEmail(e.target.value)}
+              className="w-full mt-1 p-2 rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none"
+            />
+          </div>
 
+          <button
+            type="submit"
+            className="mt-4 py-2 px-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold text-white transition"
+          >
+            حفظ التعديلات
+          </button>
+        </form>
 
-<motion.div
-initial={{opacity:0, y:40}}
-animate={{opacity:1, y:0}}
-transition={{duration:1}}
-className="mt-8 bg-white/10 backdrop-blur-xl border border-white/20 p-6 md:p-8 rounded-3xl shadow-xl text-gray-200 w-[90%] max-w-3xl"
->
+        {saved && (
+          <p className="text-center text-green-400 mt-4">
+            تم حفظ التعديلات بنجاح ✅
+          </p>
+        )}
+      </motion.div>
 
-
-
-<h3 className="text-xl font-bold mb-4 text-center text-white">
-تعديل الملف الشخصي ✏️
-</h3>
-
-
-<form onSubmit={handleSubmit} className="flex flex-col gap-4">
-<div>
-  <label className="text-gray-400 text-sm">الاسم</label>
-  <input type="text" value={editName} onChange={(e)=> setEditName(e.target.value)} className="w-full mt-1 rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none"/>
-</div>
-
-
-<div>
-  <label className="text-sm text-gray-400">البريد الإلكتروني</label>
-  <input type="email" value={editEmail} onChange={(e)=> setEditEmail(e.target.value)} className="w-full mt-1 p-2 rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none"/>
-</div>
-
-
-
-<button type="submit" className="mt-4 py-2 px-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold text-white transition">
-حفظ التعديلات
-</button>
-
-
-
-</form>
-
-
-
-{saved && (
-  <p className="text-center text-green-400 mt-4">
-  تم حفظ التعديلات بنجاح ✅
-  </p>
-)}
-</motion.div>
-
-
-<p className="mt-10 mb-3 text-gray-400 text-sm">
-© 2026 NeoBank - جميع الحقوق محفوظة
-</p>
-
-
-
-
-
+      <p className="mt-10 mb-3 text-gray-400 text-sm">
+        © 2026 NeoBank - جميع الحقوق محفوظة
+      </p>
     </div>
   );
 }

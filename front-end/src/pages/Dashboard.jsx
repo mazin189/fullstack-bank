@@ -1,88 +1,83 @@
 import { useContext, useEffect, useState } from "react";
 import { Wallet, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import {AuthContext} from "../context/AuthContext.jsx"
-import axios from "../api/axios.js"
+import { AuthContext } from "../context/AuthContext.jsx";
+import axios from "../api/axios.js";
 
 const Dashboard = () => {
-
-  const {user, setUser} = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
-
-
-  const userBalance = user?.balance || 0
-  const cardBalance = user?.card?.balance || 0
+  const userBalance = user?.balance || 0;
+  const cardBalance = user?.card?.balance || 0;
 
   useEffect(() => {
-    const fetchUser = async()=> {
-      try{
-        const {data} = await axios.get("/users/me")
-        setUser(data)
-      }catch(err){
-        console.log(err)
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get("/users/me");
+        setUser(data);
+      } catch (err) {
+        console.log(err);
       }
-    }
-    fetchUser()
-  },[])
-
+    };
+    fetchUser();
+  }, []);
 
   const handleTransaction = async (type) => {
-   if(!amount || Number(amount) <= 0) return alert("أدخل مبلغ صحيح")
-    setLoading(true)
+    if (!amount || Number(amount) <= 0) return alert("أدخل مبلغ صحيح");
+    setLoading(true);
 
-   try{
-   let endpoint = ""
-   if(type === "deposit") endpoint = "/card-transactions/deposit"
-   else if(type === "withdraw") endpoint = "/card-transactions/withdraw"
-   else if (type === "to-card") endpoint ="/card-transactions/to-card"
-   else if(type === "to-account") endpoint = "/card-transactions/to-account"
+    try {
+      let endpoint = "";
+      if (type === "deposit") endpoint = "/card-transactions/deposit";
+      else if (type === "withdraw") endpoint = "/card-transactions/withdraw";
+      else if (type === "to-card") endpoint = "/card-transactions/to-card";
+      else if (type === "to-account")
+        endpoint = "/card-transactions/to-account";
 
-   const {data} = await axios.post(endpoint, {amount: Number(amount)})
+      const { data } = await axios.post(endpoint, { amount: Number(amount) });
 
-   setUser(prev=> (
-    {...prev, balance: data.userBalance ?? prev.balance, card: {...prev.card, balance: data.cardBalance ?? prev.card?.balance ?? 0,}}
-   ))
-   setAmount("")
-   alert(data.message)
-   }catch(err){
-    alert(err.response?.data?.message || "حدث خطأ أثناء العملية")
-   }finally{
-    setLoading(false)
-   }
-  }
-
-
-
-
+      setUser((prev) => ({
+        ...prev,
+        balance: data.userBalance ?? prev.balance,
+        card: {
+          ...prev.card,
+          balance: data.cardBalance ?? prev.card?.balance ?? 0,
+        },
+      }));
+      setAmount("");
+      alert(data.message);
+    } catch (err) {
+      alert(err.response?.data?.message || "حدث خطأ أثناء العملية");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleStripeDeposit = async () => {
-    if(!amount || Number(amount) <= 0) return alert("أدخل مبلغ صحيح")
-      setLoading(true)
+    if (!amount || Number(amount) <= 0) return alert("أدخل مبلغ صحيح");
+    setLoading(true);
 
-    try{
-    const token = localStorage.getItem("token")
-    const {data} = await axios.post("/deposit/create", {amount: Number(amount)}, {headers: {Authorization : `Bearer ${token}`}})
-    if(data.success && data.session_url) {
-      window.location.href = data.session_url
-    }else{
-      alert("حدث خطأ أثناء إنشاء جلسة الدفع ❌")
+    try {
+      const token = localStorage.getItem("token");
+      const { data } = await axios.post(
+        "/deposit/create",
+        { amount: Number(amount) },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      if (data.success && data.session_url) {
+        window.location.href = data.session_url;
+      } else {
+        alert("حدث خطأ أثناء إنشاء جلسة الدفع ❌");
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "فشل الاتصال ب Stripe");
+    } finally {
+      setLoading(false);
     }
-    }catch(err){
-     console.error(err)
-    alert(err.response?.data?.message || "فشل الاتصال ب Stripe")
-    }finally{
-      setLoading(false)
-    }
-
-
-  }
-
-
-
-
-
+  };
 
   return (
     <div className="pt-24 min-h-screen flex items-center justify-center bg-linear-to-br from-[#0a0f1f] via-[#1a237e] to-[#3f51b5] p-6 relative w-full">
@@ -143,8 +138,8 @@ const Dashboard = () => {
           >
             {loading ? "..." : "سحب الأموال"}
           </button>
-          </div>
-          
+        </div>
+
         <div className="flex flex-col sm:flex-row justify-center gap-6">
           <button
             onClick={() => handleTransaction("to-card")}

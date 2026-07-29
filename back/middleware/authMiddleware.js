@@ -13,7 +13,9 @@ export const protect = async (req, res, next) => {
       req.user = await User.findById(decoded.id).select("-password");
       next();
     } catch (error) {
-      return res.status(401).json({ message: "غير مصرح به", error : error.message });
+      return res
+        .status(401)
+        .json({ message: "غير مصرح به", error: error.message });
     }
   }
   if (!token) return res.status(401).json({ message: "لا يوجد رمز مصادقة" });

@@ -50,11 +50,10 @@ export default function Cards() {
   };
 
   useEffect(() => {
-    if(!token) return;
+    if (!token) return;
     fetchCards();
-  }, [fetchCards,token]);
+  }, [fetchCards, token]);
 
-  
   if (!admin) {
     return (
       <p className="p-6 text-center text-red-400">يجب تسجيل الدخول كأدمن</p>
@@ -149,19 +148,21 @@ export default function Cards() {
                   </div>
                 </div>
 
-
                 <div className="flex items-center justify-between mt-4">
-                 <div className="text-sm text-gray-300"> {c._id.slice(-6)} : رقم داخلي</div>
+                  <div className="text-sm text-gray-300">
+                    {" "}
+                    {c._id.slice(-6)} : رقم داخلي
+                  </div>
 
-                 <button onClick={()=> deleteCard(c._id)} disabled={deleting === c._id} 
-                  className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold transition ${deleting === c._id ? "bg-red-500/60 cursor-not-allowed" : "bg-red-600 hover:bg-red-700" }`}>
-                    <Trash2 className="w-4 h-4"/>
+                  <button
+                    onClick={() => deleteCard(c._id)}
+                    disabled={deleting === c._id}
+                    className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold transition ${deleting === c._id ? "bg-red-500/60 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"}`}
+                  >
+                    <Trash2 className="w-4 h-4" />
                     {deleting === c._id ? "جار الحذف..." : "حذف"}
-                 </button>
-                 
+                  </button>
                 </div>
-
-
               </motion.div>
             ))}
           </div>

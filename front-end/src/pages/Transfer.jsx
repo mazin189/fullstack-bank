@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { Send, Mail, DollarSign } from "lucide-react";
 import { useState } from "react";
-import axios from "../api/axios.js"
-
+import axios from "../api/axios.js";
 
 export default function Transfer() {
   const [email, setEmail] = useState("");
@@ -10,23 +9,20 @@ export default function Transfer() {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   const handleTransfer = async () => {
-    try{
-    setLoading(true);
-    const {data} = await axios.post("/transfer", {
-      receiverEmail: email,
-      amount: Number(amount)
-    });
-    setMsg(data.message);
-    }catch(err){
-    setMsg("حدث خطأ أثناء التحويل ❌");
-    }finally{
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/transfer", {
+        receiverEmail: email,
+        amount: Number(amount),
+      });
+      setMsg(data.message);
+    } catch (err) {
+      setMsg("حدث خطأ أثناء التحويل ❌");
+    } finally {
       setLoading(false);
     }
-  }
-
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#1a002e] via-[#3a0078] to-[#b48cf2] p-6">
@@ -92,26 +88,19 @@ export default function Transfer() {
           </motion.button>
         </div>
 
+        {msg && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={`mt-6 text-center font-medium ${msg.includes("❌") ? "text-red-400" : "text-green-400"}`}
+          >
+            {msg}
+          </motion.p>
+        )}
 
- 
- {msg && (
-  <motion.p
-  initial={{opacity: 0}}
-  animate={{opacity:1}}
-  className={`mt-6 text-center font-medium ${msg.includes("❌") ? "text-red-400" : "text-green-400"}`}
-  >
- {msg}
-  </motion.p>
- )}
-
-
-
-<div className="text-center text-gray-300 text-sm mt-8">
-<p>© 2026 NeoBank - تحويل آمن و سريع</p>
-</div>
-
-
-
+        <div className="text-center text-gray-300 text-sm mt-8">
+          <p>© 2026 NeoBank - تحويل آمن و سريع</p>
+        </div>
       </motion.div>
     </div>
   );
